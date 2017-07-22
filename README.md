@@ -1,30 +1,42 @@
-# Freertos bsp for Zynq (Microzed, Zedboard, etc.)
+# FreeRTOS Infrastructure for Zynq (Microzed, Zedboard, etc.)
 
-*tested on microzed 7010/7020*
+**Note: This project no longer provides the FreeRTOS bsp for Zynq. Please use the official bsp from Xilinx whenever possible.**
 
-## 1. Features
+See:
 
-The zynq bsp for freeRTOS, using the cutting-edge version of freeRTOS (currently v8.2.0rc1) and the demos in `CORTEX_A9_Zynq_ZC702` of the official freeRTOS repository.
+https://github.com/Xilinx/embeddedsw
 
-`freertos_zynq.mld` and `freertos_zynq.tcl` are migrating from Xilinx community ports, the latest version is available via [interactive freertos 2014.2](http://interactive.freertos.org/entries/31659559-Xilinx-Zynq-FreeRTOS-and-lwIP-demo-XAPP1026-Vivado-2014-2) or the official xapp1026 [xapp1026 App note](http://www.xilinx.com/support/documentation/application_notes/xapp1026.pdf), which shipping a BSP of FreeRTOS version v7.0.2.
+The layout of Xilinx **embeddedsw** is
 
-This bsp aims to illustrate the basis of freertos by porting all demos in official FreeRTOS repository while also includes lwip capabilities.
+```
+ -- ThirdParty
+  |-- bsp/freertos901_xilinx
+  |-- sw_services
+    |-- libmetal
+    |-- lwip141
+    |-- openamp
+```
 
-The demo files of `CORTEX_A9_Zynq_ZC702` are available from official svn or via [freertos sync at github](https://github.com/cjlano/freertos). The building instructions on ZC702 can be found at the official freeRTOS website [RTOS-Xilinx-Zynq](http://www.freertos.org/RTOS-Xilinx-Zynq.html).
+This infrastructure, provides additional `sw_services` such as `freertos_cli`, etc. and some demos in `sw_apps`. This project also gives hardware designs in `hw_apps` using `.tcl` script. You may generate a basic PL design in one click. There are also some tutorials (or notes) on how to use FreeRTOS under Xilinx Zynq (tested using microzed 7z010 and 7z020).
 
-## 2. Supported drivers
+```
+ -- hw_apps
+  |-- zynq_basic.tcl
+  |-- zynq_advanced.tcl
+ -- sw_apps
+  |-- 1. hello, world
+  |-- 2. gpio
+  |-- 3. ethernet RX/TX, iperf
+  |-- 4. PL/PS programming
+ -- sw_services
+  |-- freertos_cli
+ -- tutorials
+```
 
-Currently, the support drivers are :
-- [x] FreeRTOS CLI package,
-- [x] lwIP package,
+## 1. Instructions
 
-TODO list :
-- [ ] other demos and sw apps in the `Demo/common` folder,
-- [ ] board-aware (like LED toggling, buttons etc.,) demos to the package,
-- [ ] matrix algebra package.
+1. Create the base design in Vivado using a tcl script in `hw_apps`, synthesis and generate the bitstream.
+2. Open SDK, and set repository via `Xilinx Tools`, `Repositories` and add (new) the location of the cloned source code.
+3. Open `File`, `New Project`, add the demos, Select `freertos901_xilinx` as the bsp and select any related demo projects.
+4. Compile and run.
 
-## 3. Instructions
-
-Open SDK, and set repository via `Xilinx Tools`, `Repositories` and add (new) the location of the cloned source code.
-
-Open `File`, `New Project`, add the demos, compile and run.
